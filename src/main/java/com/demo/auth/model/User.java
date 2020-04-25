@@ -8,12 +8,12 @@ import java.sql.Array;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class MyUserDetails implements UserDetails {
+public class User implements UserDetails {
 
     private String userName;
     private String password;
 
-    public MyUserDetails(String userName) {
+    public User(String userName) {
         this.userName = userName;
     }
 

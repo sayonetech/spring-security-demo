@@ -11,12 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +30,13 @@ public class HomeController {
     @GetMapping("/")
     public String home() {
         return ("<h1>Welcome</h1>");
+    }
+
+    @RequestMapping(value = "/resource", method = RequestMethod.GET)
+    public Map<String, String> getResource() {
+        Map<String, String> resource = new HashMap<String, String>();
+        resource.put("resource", "here is some resource");
+        return resource;
     }
 
     @PostMapping(value = "/login")

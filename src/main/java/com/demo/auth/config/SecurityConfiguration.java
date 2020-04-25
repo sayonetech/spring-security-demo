@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
@@ -30,20 +31,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().authorizeRequests()
-                    .antMatchers("/admin").hasRole("ADMIN")
-                    .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/login","/").permitAll()
+                .anyRequest().authenticated()
                 .and()
+                    .requestCache()
+                    .requestCache(new NullRequestCache())
+                .and()
+                    .httpBasic()
+                .and()
+                    .sessionManagement()
+                    .maximumSessions(1)
+                    .maxSessionsPreventsLogin(true)
+                    .sessionRegistry(sessionRegistry())
+                .and()
+                .and()
+                    .formLogin()
+                    .disable()
                     .csrf()
                     .disable();
-                //.and()
-                    //.requestCache().requestCache(new NullRequestCache());
-                //.and().formLogin();
-
-        http.sessionManagement().
-                maximumSessions(1).
-                maxSessionsPreventsLogin(false).
-                sessionRegistry(sessionRegistry());
     }
 
     @Bean

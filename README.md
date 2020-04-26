@@ -17,10 +17,10 @@ This project is built using Spring-boot and Gradle.
 
 ## TODO
 
-- [x] JPA based Authentication
-- [x] Flyway Migration
-- [x] Swagger Doc
-- [x] CORS 
-- [x] Base Controller 
-- [x] Gzip compression 
+- [] JPA based Authentication
+- [] Flyway Migration
+- [] Swagger Doc
+- [] CORS 
+- [] Base Controller 
+- [] Gzip compression 
 

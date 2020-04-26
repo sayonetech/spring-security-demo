@@ -14,11 +14,16 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED;
+
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private ExpiredSessionStrategy expiredSessionStrategy;
 
     @Autowired
     private RedisIndexedSessionRepository sessionRepository;
@@ -39,8 +44,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .httpBasic()
                 .and()
                     .sessionManagement()
+                    .sessionFixation()
+                    .migrateSession()
+                    .sessionCreationPolicy(IF_REQUIRED)
                     .maximumSessions(1)
-                    .maxSessionsPreventsLogin(true)
+                    .maxSessionsPreventsLogin(false)
+                    .expiredSessionStrategy(expiredSessionStrategy)
                     .sessionRegistry(sessionRegistry())
                 .and()
                 .and()
@@ -64,5 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 
 }

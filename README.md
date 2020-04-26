@@ -9,7 +9,7 @@ This project is built using Spring-boot and Gradle.
 - *>gradlew bootRun* : to run the project 
 - *>gradlew bootWar* : To package the project as a standalone war. The war file will be generated in /build/libs/* folder of the the selected service with file name *.war
 
-### Features Enable 
+### Features  
 
 - This has a basic authentication service that authenticate any user with password "password"
 - redis session 

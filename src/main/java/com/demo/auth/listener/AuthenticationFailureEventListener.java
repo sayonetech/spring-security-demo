@@ -1,4 +1,4 @@
-package com.demo.auth.event;
+package com.demo.auth.listener;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;

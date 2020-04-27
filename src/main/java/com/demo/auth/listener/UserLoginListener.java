@@ -1,5 +1,6 @@
-package com.demo.auth.event;
+package com.demo.auth.listener;
 
+import com.demo.auth.event.UserLoginEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 

@@ -28,9 +28,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisIndexedSessionRepository sessionRepository;
 
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
+        auth.authenticationProvider(authProvider);
     }
 
     @Override
@@ -53,8 +57,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sessionRegistry(sessionRegistry())
                 .and()
                 .and()
-                    .formLogin()
-                    .disable()
                     .csrf()
                     .disable();
     }
@@ -73,7 +75,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
 
 
 }

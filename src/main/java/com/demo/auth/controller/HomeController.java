@@ -1,25 +1,23 @@
 package com.demo.auth.controller;
 
 
-import com.demo.auth.model.User;
-import com.demo.auth.request.LoginParams;
+import com.demo.auth.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController
+@RequestMapping(value = "/api/v1/user")
 public class HomeController {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
@@ -40,24 +38,17 @@ public class HomeController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody LoginParams params, HttpSession session) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(params.getUsername(), params.getPassword());
+    public ResponseEntity login(@RequestBody LoginRequest params,
+                                HttpServletRequest request, HttpServletResponse response, BindingResult result) throws ServletException {
         try {
-            session.setAttribute(
-                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                    SecurityContextHolder.getContext()
-            );
-            Authentication authentication = authenticationManager.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            User currentUser = (User) authentication.getPrincipal();
-            logger.log(Level.INFO, "User {0} has been logged in successfully", currentUser.getUsername());
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            request.login(params.getUsername(), params.getPassword());
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (ServletException authenticationFailed) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
+
     }
+
     @GetMapping("/user")
     public String user() {
         return ("<h1>Welcome User</h1>");

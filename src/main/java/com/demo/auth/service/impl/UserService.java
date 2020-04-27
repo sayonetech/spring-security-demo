@@ -1,4 +1,4 @@
-package com.demo.auth.service;
+package com.demo.auth.service.impl;
 
 import com.demo.auth.model.User;
 import org.springframework.security.core.userdetails.UserDetails;

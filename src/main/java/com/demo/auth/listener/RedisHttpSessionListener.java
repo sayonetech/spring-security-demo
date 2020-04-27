@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 @Component
 public class RedisHttpSessionListener implements HttpSessionListener {
 
-    Logger logger = Logger.getLogger(this.getClass().getName());
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Override
     public void sessionCreated(HttpSessionEvent event) {

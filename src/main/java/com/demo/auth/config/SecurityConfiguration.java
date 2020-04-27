@@ -1,8 +1,10 @@
 package com.demo.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +22,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.IF_
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -28,14 +33,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisIndexedSessionRepository sessionRepository;
 
-    @Autowired
-    private CustomAuthenticationProvider authProvider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-        auth.authenticationProvider(authProvider);
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                // configure a auth event publisher
+                .authenticationEventPublisher(new DefaultAuthenticationEventPublisher(applicationEventPublisher))
+                .userDetailsService(userDetailsService);
     }
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService);
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

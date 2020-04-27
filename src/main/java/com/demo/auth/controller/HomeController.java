@@ -40,13 +40,7 @@ public class HomeController {
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginRequest params,
                                 HttpServletRequest request, HttpServletResponse response, BindingResult result) throws ServletException {
-        try {
-            request.login(params.getUsername(), params.getPassword());
-            return new ResponseEntity(HttpStatus.OK);
-        }catch (ServletException authenticationFailed) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
-        }
-
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/user")

@@ -1,5 +1,6 @@
 package com.demo.auth;
 
+import com.demo.auth.model.user.Addresses;
 import com.demo.auth.model.user.User;
 import com.demo.auth.model.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -30,7 +31,16 @@ public class SpringAuthApplication extends SpringBootServletInitializer {
 			userRepository.save(admin);
 
 			User guest = new User("test", "123456");
+			Addresses address = new Addresses();
+			address.setAddressLine1("Sayone Technologies");
+			address.setAddressLine2("Unit no 501");
+			address.setCity("Kochi");
+			address.setState("Kerala");
+			address.setZipCode("586020");
+			address.setCountry("India");
+			guest.getUserAddresses().add(address);
 			userRepository.save(guest);
+
 		});
 
 	}

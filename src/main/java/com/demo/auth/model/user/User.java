@@ -5,12 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity(name = "User")
 @Table(name = "user")
@@ -37,9 +33,12 @@ public class User extends BaseModel implements UserDetails {
     @Column(nullable = false)
     private boolean enabled;
 
+    @OneToMany(mappedBy = "addressOwner", cascade = CascadeType.ALL)
+    private Set<Addresses> userAddresses = new HashSet<>();
+
     public User() {
     }
-    
+
     public User(String userName, String password) {
         this.username = userName;
         this.password = password;
@@ -122,5 +121,13 @@ public class User extends BaseModel implements UserDetails {
 
     public void setSuperuser(boolean superuser) {
         isSuperuser = superuser;
+    }
+
+    public Set<Addresses> getUserAddresses() {
+        return userAddresses;
+    }
+
+    public void setUserAddresses(Set<Addresses> userAddresses) {
+        this.userAddresses = userAddresses;
     }
 }

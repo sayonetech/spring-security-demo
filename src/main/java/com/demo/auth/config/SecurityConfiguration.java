@@ -69,6 +69,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sessionRegistry(sessionRegistry())
                 .and()
                 .and()
+                    .headers()
+                    .frameOptions()
+                    .sameOrigin() //for H2 DB
+                .and()
                     .csrf()
                     .disable();
     }

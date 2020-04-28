@@ -37,6 +37,9 @@ public class User extends BaseModel implements UserDetails {
     @Column(nullable = false)
     private boolean enabled;
 
+    public User() {
+    }
+    
     public User(String userName, String password) {
         this.username = userName;
         this.password = password;

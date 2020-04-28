@@ -1,6 +1,8 @@
 package com.demo.auth.service.impl;
 
 import com.demo.auth.model.user.User;
+import com.demo.auth.model.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,8 +13,15 @@ import java.io.Serializable;
 @Service
 public class UserService implements UserDetailsService, Serializable {
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User(username,"password");
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("username " + username + " not found");
+        }
+        return user;
     }
 }

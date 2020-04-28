@@ -33,7 +33,7 @@ public class User extends BaseModel implements UserDetails {
     @Column(nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "addressOwner", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "addressOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Addresses> userAddresses = new HashSet<>();
 
     public User() {

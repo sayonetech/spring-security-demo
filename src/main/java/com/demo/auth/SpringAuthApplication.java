@@ -3,16 +3,22 @@ package com.demo.auth;
 import com.demo.auth.model.user.Addresses;
 import com.demo.auth.model.user.User;
 import com.demo.auth.model.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
+
+import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
-public class SpringAuthApplication extends SpringBootServletInitializer {
+public class SpringAuthApplication extends SpringBootServletInitializer implements CommandLineRunner {
+
+	@Autowired
+	private UserRepository userRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringAuthApplication.class);
@@ -23,25 +29,23 @@ public class SpringAuthApplication extends SpringBootServletInitializer {
 		return application.sources(SpringAuthApplication.class);
 	}
 
-	@Bean
-	public CommandLineRunner init(UserRepository userRepository){
-		return (args -> {
-			User admin = new User("admin", "123456");
-			admin.setSuperuser(true);
-			userRepository.save(admin);
+	@Override
+	@Transactional
+	public void run(String... args) throws Exception {
+		User admin = new User("admin", "123456");
+		admin.setSuperuser(true);
+		userRepository.save(admin);
 
-			User guest = new User("test", "123456");
-			Addresses address = new Addresses();
-			address.setAddressLine1("Sayone Technologies");
-			address.setAddressLine2("Unit no 501");
-			address.setCity("Kochi");
-			address.setState("Kerala");
-			address.setZipCode("586020");
-			address.setCountry("India");
-			guest.getUserAddresses().add(address);
-			userRepository.save(guest);
-
-		});
-
+		User guest = new User("test", "123456");
+		Addresses address = new Addresses();
+		address.setAddressLine1("Sayone Technologies");
+		address.setAddressLine2("Unit no 501");
+		address.setCity("Kochi");
+		address.setState("Kerala");
+		address.setZipCode("586020");
+		address.setCountry("India");
+		address.setAddressOwner(guest);
+		guest.getUserAddresses().add(address);
+		userRepository.save(guest);
 	}
 }

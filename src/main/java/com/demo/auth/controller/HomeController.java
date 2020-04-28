@@ -1,17 +1,20 @@
 package com.demo.auth.controller;
 
 
+import com.demo.auth.model.user.User;
 import com.demo.auth.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.channels.spi.SelectorProvider;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -31,9 +34,11 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/resource", method = RequestMethod.GET)
-    public Map<String, String> getResource() {
-        Map<String, String> resource = new HashMap<String, String>();
-        resource.put("resource", "here is some resource");
+    public Map<String, Object> getResource() {
+        Map<String, Object> resource = new HashMap<String, Object>();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        resource.put("user", user);
+        //resource.put("addresses", user.getUserAddresses());
         return resource;
     }
 

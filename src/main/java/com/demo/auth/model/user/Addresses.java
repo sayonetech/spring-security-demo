@@ -3,15 +3,13 @@ package com.demo.auth.model.user;
 import com.demo.auth.model.BaseModel;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Addresses")
 @Table(name = "addresses")
 public class Addresses extends BaseModel {
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User addressOwner;
 
     @Column(name = "address_line_1",nullable = false)
@@ -34,18 +32,7 @@ public class Addresses extends BaseModel {
 
     public Addresses() {
     }
-
-    public Addresses(String addressLine1,
-                     String addressLine2, String city, String state,
-                     String zipCode, String country) {
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
-        this.country = country;
-    }
-
+    
     public User getAddressOwner() {
         return addressOwner;
     }

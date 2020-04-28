@@ -1,6 +1,6 @@
 package com.demo.auth.service.impl;
 
-import com.demo.auth.model.User;
+import com.demo.auth.model.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +13,6 @@ public class UserService implements UserDetailsService, Serializable {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User(username);
+        return new User(username,"password");
     }
 }

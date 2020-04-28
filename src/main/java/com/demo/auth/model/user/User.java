@@ -1,5 +1,6 @@
-package com.demo.auth.model;
+package com.demo.auth.model.user;
 
+import com.demo.auth.model.BaseModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,9 +37,9 @@ public class User extends BaseModel implements UserDetails {
     @Column(nullable = false)
     private boolean enabled;
 
-    public User(String userName) {
+    public User(String userName, String password) {
         this.username = userName;
-        this.password = "password";
+        this.password = password;
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;

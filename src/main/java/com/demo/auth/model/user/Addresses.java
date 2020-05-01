@@ -1,16 +1,27 @@
 package com.demo.auth.model.user;
 
 import com.demo.auth.model.BaseModel;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 
 @Entity(name = "Addresses")
 @Table(name = "addresses")
+@org.hibernate.annotations.Cache(
+        usage = CacheConcurrencyStrategy.READ_WRITE
+)
+@NaturalIdCache
 public class Addresses extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User addressOwner;
+
+    @NaturalId
+    @Column(nullable = false, unique = true)
+    private String slug;
 
     @Column(name = "address_line_1",nullable = false)
     private String addressLine1;
@@ -29,6 +40,9 @@ public class Addresses extends BaseModel {
 
     @Column(nullable = false)
     private String country;
+
+    @Enumerated(EnumType.STRING)
+    private AddressType type;
 
     public Addresses() {
     }
@@ -89,4 +103,19 @@ public class Addresses extends BaseModel {
         this.country = country;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public AddressType getType() {
+        return type;
+    }
+
+    public void setType(AddressType type) {
+        this.type = type;
+    }
 }

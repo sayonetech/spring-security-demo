@@ -1,5 +1,6 @@
 package com.demo.auth;
 
+import com.demo.auth.model.user.AddressType;
 import com.demo.auth.model.user.Addresses;
 import com.demo.auth.model.user.User;
 import com.demo.auth.model.user.UserRepository;
@@ -11,8 +12,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 
 @SpringBootApplication
 public class SpringAuthApplication extends SpringBootServletInitializer implements CommandLineRunner {
@@ -44,6 +43,8 @@ public class SpringAuthApplication extends SpringBootServletInitializer implemen
 		address.setState("Kerala");
 		address.setZipCode("586020");
 		address.setCountry("India");
+		address.setType(AddressType.HOME);
+		address.setSlug("sayone");
 		address.setAddressOwner(guest);
 		guest.getUserAddresses().add(address);
 		userRepository.save(guest);

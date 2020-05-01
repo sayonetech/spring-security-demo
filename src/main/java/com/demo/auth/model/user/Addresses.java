@@ -41,7 +41,7 @@ public class Addresses extends BaseModel {
     @Column(nullable = false)
     private String country;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     private AddressType type;
 
     public Addresses() {

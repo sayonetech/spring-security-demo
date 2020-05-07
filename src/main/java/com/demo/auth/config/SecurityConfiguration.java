@@ -64,8 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .requestCache()
                     .requestCache(new NullRequestCache())
-                .and()
-                    .httpBasic()
+//                .and()
+//                    .httpBasic()
                 .and()
                     .sessionManagement()
                     .sessionFixation()
@@ -84,22 +84,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .csrf()
                     .disable();
 
-        http
-                .formLogin()
+        http.formLogin()
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID");
 
-        http
-                .rememberMe();
+        http.rememberMe();
 
-        http.formLogin().successHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request,
-                                                HttpServletResponse response,
-                                                Authentication authentication) throws IOException, ServletException {
-                //do nothing
-            }
+        http.formLogin().successHandler((request, response, authentication) -> {
+            //do nothing
+        });
+
+        http.formLogin().failureHandler((request, response, authentication) -> {
+            //do nothing
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         });
     }
 

@@ -2,18 +2,14 @@ package com.demo.auth.controller;
 
 
 import com.demo.auth.model.user.User;
-import com.demo.auth.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -41,11 +37,6 @@ public class HomeController {
         return resource;
     }
 
-    @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody LoginRequest params,
-                                HttpServletRequest request, HttpServletResponse response, BindingResult result) throws ServletException {
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
     @GetMapping("/user")
     public String user() {

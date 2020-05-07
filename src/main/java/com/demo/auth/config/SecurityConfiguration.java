@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -35,6 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisIndexedSessionRepository sessionRepository;
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -93,7 +96,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             //do nothing
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         });
+
+        http.exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAccessDeniedHandler);
     }
+
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
